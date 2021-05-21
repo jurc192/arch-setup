@@ -64,3 +64,6 @@ Added `xcape -e 'Super_L=Control_L|Shift_L|Alt_L|Super_L|D'` to *.xinitrc* file.
 
 
 
+OFFTOPIC detour git.
+
+How to combine two commits into one? How to check what's already pushed and what not?

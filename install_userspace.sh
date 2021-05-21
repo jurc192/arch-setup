@@ -1,10 +1,14 @@
 #!/bin/bash
 # Custom Arch linux system installation script (userspace)
 # by Jure Vidmar
-set -x
+
+# Execute with (needs root privileges):
+# $ ./install_userspace.sh <user>
+
 PACKAGES="linux linux-firmware base base-devel sudo man-db man-pages nano openssh parted wpa_supplicant networkmanager xorg xorg-server xfce4 openbox git firefox code ttf-fira-code xclip tint2 picom xcape network-manager-applet papirus-icon-theme rofi wmctrl"
 PACKAGES_AUR="pcloud typora"
 
+set -x
 [[ $EUID -ne 0 ]] && echo "This script must be run as root." && exit 1
 [ -z "$1" ]       && echo "Usage: $0 <user>"                 && exit 1
 

@@ -77,6 +77,9 @@ arch-chroot /mnt /bin/bash <<- CHROOT
     sed -i "/$locale/s/^#//" /etc/locale.gen
     locale-gen
 
+    # Timezone
+    ln -sf /usr/share/zoneinfo/Europe/Ljubljana /etc/localtime
+
     # Create user account
     useradd -mU -G wheel,video,audio,storage,lp,optical "$user"
     printf "$user:$password\n" | chpasswd

@@ -41,10 +41,10 @@ devicelist=$(lsblk -dplnx size -o name,size | grep -Ev "boot|rpmb|loop" | tac)
 device=$(dialog --stdout --menu "Select installtion disk" 0 0 0 ${devicelist}) || exit 1
 clear
 
-boot_size=513Mib    # 512 + 1MiB offset. WHy do we need that? MBR?
+boot_size=512Mib    # 512 + 1MiB offset. WHy do we need that? MBR?
 parted --script "${device}" -- \
   mklabel gpt \
-  mkpart ESP fat32 1MiB ${boot_size} \
+  mkpart ESP fat32 0% ${boot_size} \
   set 1 boot on \
   mkpart primary ext4 ${boot_size} 100%
 
@@ -68,6 +68,8 @@ genfstab -t PARTUUID /mnt > /mnt/etc/fstab
 
 arch-chroot /mnt /bin/bash <<- CHROOT
 
+    set -x
+    
     # Hostname
     printf "$hostname\n" > /etc/hostname
 

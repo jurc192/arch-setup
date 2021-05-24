@@ -5,7 +5,7 @@
 # Execute with (needs root privileges):
 # $ ./install_userspace.sh <user>
 
-PACKAGES="linux linux-firmware base base-devel sudo man-db man-pages nano openssh parted wpa_supplicant networkmanager xorg xorg-server xfce4 xfce4-screenshooter openbox git tmux firefox code ttf-fira-code xclip tint2 picom xcape network-manager-applet papirus-icon-theme rofi wmctrl gsimplecal light pulseaudio pulsemixer"
+PACKAGES="linux linux-firmware base base-devel sudo man-db man-pages nano openssh parted wpa_supplicant networkmanager xorg xorg-server xfce4 xfce4-screenshooter openbox git tmux firefox code ttf-fira-code xclip tint2 picom xcape network-manager-applet papirus-icon-theme rofi wmctrl gsimplecal light pulseaudio pulsemixer pasystray"
 PACKAGES_AUR="typora"
 
 set -x
@@ -48,7 +48,7 @@ runuser $1 <<- 'HEREDOC'
     fi;
 
     dotfiles config status.showUntrackedFiles no
-    printf "alias dots='git --git-dir=$HOME/$DIR_NAME/ --work-tree=$HOME'\n" >> $HOME/.bashrc
+    # printf "alias dots='git --git-dir=$HOME/$DIR_NAME/ --work-tree=$HOME'\n" >> $HOME/.bashrc
     printf "\nConfiguration files applied successfully\n"
 
     # Install themes

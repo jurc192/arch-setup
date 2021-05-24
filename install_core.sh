@@ -82,6 +82,9 @@ chroot_stuff () {
     printf "%%wheel ALL=(ALL) ALL\n" > /etc/sudoers.d/99_wheel
     visudo -cf /etc/sudoers.d/99_wheel
 
+    # Free access to dmesg
+    printf "kernel.dmesg_restrict=0\n" > /etc/sysctl.d/99-dmesg.conf
+
     # Boot manager (systemd-boot)
     bootctl install
     printf "default archlinux\n" > /boot/loader.conf

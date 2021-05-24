@@ -5,7 +5,7 @@
 # Execute with (needs root privileges):
 # $ ./install_userspace.sh <user>
 
-PACKAGES="linux linux-firmware base base-devel sudo man-db man-pages nano openssh parted wpa_supplicant networkmanager xorg xorg-server xfce4 openbox git firefox code ttf-fira-code xclip tint2 picom xcape network-manager-applet papirus-icon-theme rofi wmctrl"
+PACKAGES="linux linux-firmware base base-devel sudo man-db man-pages nano openssh parted wpa_supplicant networkmanager xorg xorg-server xfce4 openbox git firefox code ttf-fira-code xclip tint2 picom xcape network-manager-applet papirus-icon-theme rofi wmctrl light pulseaudio pulsemixer"
 PACKAGES_AUR="pcloud typora"
 
 set -x

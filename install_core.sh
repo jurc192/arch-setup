@@ -65,8 +65,9 @@ pacstrap /mnt linux linux-firmware base base-devel sudo man-db man-pages nano op
 
 # Post-installation stuff
 genfstab -t PARTUUID /mnt > /mnt/etc/fstab
-chroot_stuff () {
-    
+
+arch-chroot /mnt /bin/bash <<- CHROOT
+
     # Hostname
     printf "$hostname\n" > /etc/hostname
 
@@ -75,6 +76,9 @@ chroot_stuff () {
     printf "LANG=$locale\n" > /etc/locale.conf
     sed -i "/$locale/s/^#//" /etc/locale.gen
     locale-gen
+
+    # Timezone
+    ln -sf /usr/share/zoneinfo/Europe/Ljubljana /etc/localtime
 
     # Create user account
     useradd -mU -G wheel,video,audio,storage,lp,optical "$user"
@@ -88,15 +92,12 @@ chroot_stuff () {
     # Boot manager (systemd-boot)
     bootctl install
     printf "default archlinux\n" > /boot/loader.conf
-    cat <<EOF > /boot/loader/entries/archlinux.conf
-title    Arch Linux
-linux    /vmlinuz-linux
-initrd   /initramfs-linux.img
-options  root=PARTUUID=$(blkid -s PARTUUID -o value "$part_root") rw
-EOF
-
-}
-export -f chroot_stuff
-arch-chroot /mnt /bin/bash -c "chroot_stuff" || exit 1
+    cat <<- INNER > /boot/loader/entries/archlinux.conf
+        title    Arch Linux
+        linux    /vmlinuz-linux
+        initrd   /initramfs-linux.img
+        options  root=PARTUUID=$(blkid -s PARTUUID -o value "$part_root") rw
+    INNER
+CHROOT
 
 printf "\n\nCore system installed successfully\n"

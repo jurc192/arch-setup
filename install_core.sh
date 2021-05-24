@@ -66,17 +66,15 @@ pacstrap /mnt linux linux-firmware base base-devel sudo man-db man-pages nano op
 # Post-installation stuff
 genfstab -t PARTUUID /mnt > /mnt/etc/fstab
 
-arch-chroot /mnt /bin/bash <<- CHROOT
-
-    set -x
+arch-chroot /mnt /bin/bash -x <<- CHROOT
     
     # Hostname
     printf "$hostname\n" > /etc/hostname
 
     # Locale
     locale="en_US.UTF-8"
-    printf "LANG=$locale\n" > /etc/locale.conf
-    sed -i "/$locale/s/^#//" /etc/locale.gen
+    printf "LANG=\$locale\n" > /etc/locale.conf
+    sed -i "/\$locale/s/^#//" /etc/locale.gen
     locale-gen
 
     # Timezone
@@ -99,7 +97,7 @@ arch-chroot /mnt /bin/bash <<- CHROOT
         linux    /vmlinuz-linux
         initrd   /initramfs-linux.img
         options  root=PARTUUID=$(blkid -s PARTUUID -o value "$part_root") rw
-    INNER
+INNER
 CHROOT
 
 printf "\n\nCore system installed successfully\n"

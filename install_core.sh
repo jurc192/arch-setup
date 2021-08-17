@@ -3,6 +3,8 @@
 # Based on https://disconnected.systems/blog/archlinux-installer/ 
 # by Jure Vidmar
 
+# Bash flags (https://bash-prompt.net/guides/bash-set-options/)
+set -xeuo pipefail
 
 # Update pacman + choose fastest pacman mirrors
 pacman -Sy --needed --noconfirm pacman-contrib dialog git

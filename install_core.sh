@@ -7,7 +7,7 @@
 set -xeuo pipefail
 
 # Update pacman + choose fastest pacman mirrors
-pacman -Sy --needed --noconfirm pacman-contrib dialog git
+pacman -S --needed --noconfirm pacman-contrib dialog
 echo "Updating mirror list"
 MIRRORLIST_URL="https://archlinux.org/mirrorlist/?country=SI&country=NL&protocol=http&protocol=https&ip_version=4"
 curl -s "$MIRRORLIST_URL" | \

@@ -1,16 +1,17 @@
 #!/bin/bash
 # Custom Arch linux system installation script (core system)
 # Based on https://disconnected.systems/blog/archlinux-installer/ 
+#
+# Download and run with:
+#   curl -L https://github.com/jurc192/arch_setup/tarball/main
+#   tar -xzf main
+#   
 # by Jure Vidmar
 
 # Bash flags (https://bash-prompt.net/guides/bash-set-options/)
 set -xeuo pipefail
 
-# Update pacman + choose fastest pacman mirrors
-echo "Updating pacman's mirror list"
-reflector --country Netherlands,Slovenia --score 5 --save /etc/pacman.d/mirrorlist
-pacman -Syu --needed --noconfirm pacman-contrib dialog
-
+pacman -S --needed --noconfirm pacman-contrib dialog
 
 # Get user input: hostname, username, password
 hostname=$(dialog --stdout --inputbox "Enter hostname" 0 0) || exit 1
@@ -29,10 +30,17 @@ clear
 [[ "$password" == "$password2" ]] || ( echo "Passwords did not match"; exit 1; )
 
 
-timedatectl set-ntp true
 # setup logging
 exec 1> >(tee "install_script_stdout.log")
 exec 2> >(tee "install_script_stderr.log")
+
+
+# Update pacman + choose fastest pacman mirrors
+echo "Updating pacman's mirror list"
+reflector --country Netherlands,Slovenia --score 5 --save /etc/pacman.d/mirrorlist
+
+# Sync time
+timedatectl set-ntp true
 
 
 # Disk partitioning and filesystems

@@ -7,12 +7,9 @@
 set -xeuo pipefail
 
 # Update pacman + choose fastest pacman mirrors
-pacman -S --needed --noconfirm pacman-contrib dialog
-echo "Updating mirror list"
-MIRRORLIST_URL="https://archlinux.org/mirrorlist/?country=SI&country=NL&protocol=http&protocol=https&ip_version=4"
-curl -s "$MIRRORLIST_URL" | \
-    sed -e 's/^#Server/Server/' -e '/^#/d' | \
-    rankmirrors -n 5 - > /etc/pacman.d/mirrorlist
+echo "Updating pacman's mirror list"
+reflector --country Netherlands,Slovenia --score 5 --save /etc/pacman.d/mirrorlist
+pacman -Syu --needed --noconfirm pacman-contrib dialog
 
 
 # Get user input: hostname, username, password

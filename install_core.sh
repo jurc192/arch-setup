@@ -104,6 +104,10 @@ arch-chroot /mnt /bin/bash -x <<- CHROOT
         linux    /vmlinuz-linux
         initrd   /initramfs-linux.img
         options  root=PARTUUID=$(blkid -s PARTUUID -o value "$part_root") rw
+
+    # Enable services
+    systemctl enable NetworkManager
+    
 INNER
 CHROOT
 

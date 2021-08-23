@@ -5,15 +5,24 @@
 # Execute with (needs root privileges):
 # $ ./install_userspace.sh <user>
 
-PACKAGES="linux linux-firmware base base-devel sudo man-db man-pages nano openssh parted wpa_supplicant networkmanager xorg xorg-server xfce4 xfce4-screenshooter openbox git tmux firefox code ttf-fira-code xclip tint2 picom xcape network-manager-applet papirus-icon-theme rofi wmctrl gsimplecal light pulseaudio pulsemixer pasystray fuse2"
-PACKAGES_AUR="typora"
+# Bash flags (https://bash-prompt.net/guides/bash-set-options/)
+set -xeuo pipefail
 
-set -x
 [[ $EUID -ne 0 ]] && echo "This script must be run as root." && exit 1
 [ -z "$1" ]       && echo "Usage: $0 <user>"                 && exit 1
 
+exec 1> >(tee "install_userspace_stdout.log")
+exec 2> >(tee "install_userspace_stderr.log")
+
+# Add jurepo (custom package repository) to pacman.conf
+cat << EOF >> /etc/pacman.conf
+[jurepo]
+SigLevel = Optional TrustAll
+Server   = https://jursaws.s3.eu-west-3.amazonaws.com/jurepo
+EOF
+
 # Install packages
-pacman -S --quiet --noprogressbar --needed $PACKAGES || exit 1
+pacman -Syu jur-userspace || exit 1
 
 # Install AUR packages
 runuser $1 <<- HEREDOC
@@ -27,8 +36,6 @@ runuser $1 <<- HEREDOC
     done
 HEREDOC
 
-# Enable services
-systemctl enable NetworkManager
 
 # Install dotfiles and themes
 runuser $1 <<- 'HEREDOC'

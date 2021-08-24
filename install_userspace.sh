@@ -25,17 +25,17 @@ EOF
 pacman -Syu jur-userspace || exit 1
 
 
-# Install AUR packages
-runuser $1 <<- HEREDOC
-    mkdir -p /tmp/aur-pkgs
-    cd /tmp/aur-pkgs || exit 1
-    for pkg in $PACKAGES_AUR; do
-        git clone https://aur.archlinux.org/\$pkg.git  &&
-        cd \$pkg &&
-        sudo -u $1 makepkg --syncdeps --install --noconfirm --noprogressbar --needed || 
-        printf "\n\nPackage \$pkg failed to install\n"
-    done
-HEREDOC
+# # Install AUR packages
+# runuser $1 <<- HEREDOC
+#     mkdir -p /tmp/aur-pkgs
+#     cd /tmp/aur-pkgs || exit 1
+#     for pkg in $PACKAGES_AUR; do
+#         git clone https://aur.archlinux.org/\$pkg.git  &&
+#         cd \$pkg &&
+#         sudo -u $1 makepkg --syncdeps --install --noconfirm --noprogressbar --needed || 
+#         printf "\n\nPackage \$pkg failed to install\n"
+#     done
+# HEREDOC
 
 
 # Install dotfiles and themes

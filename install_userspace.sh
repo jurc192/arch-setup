@@ -24,6 +24,7 @@ EOF
 # Install packages
 pacman -Syu jur-userspace || exit 1
 
+
 # Install AUR packages
 runuser $1 <<- HEREDOC
     mkdir -p /tmp/aur-pkgs
@@ -61,5 +62,10 @@ runuser $1 <<- 'HEREDOC'
     # Install themes
     git clone https://github.com/jurc192/themes.git $HOME/.themes || exit 1
 HEREDOC
+
+
+# Enable services
+systemctl enable NetworkManager
+
 
 printf "\nInstallation completed!\n"

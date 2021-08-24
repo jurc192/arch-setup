@@ -5,6 +5,10 @@
 # Download and run with:
 #   curl -L https://github.com/jurc192/arch_setup/tarball/main
 #   tar -xzf main
+#
+#   OR
+#
+#   pacman -Sy && pacman -S git && git clone https://github.com/jurc192/arch_setup
 #   
 # by Jure Vidmar
 
@@ -104,11 +108,20 @@ arch-chroot /mnt /bin/bash -x <<- CHROOT
         linux    /vmlinuz-linux
         initrd   /initramfs-linux.img
         options  root=PARTUUID=$(blkid -s PARTUUID -o value "$part_root") rw
-
-    # Enable services
-    systemctl enable NetworkManager
     
 INNER
 CHROOT
 
 printf "\n\nCore system installed successfully\n"
+
+
+# Install userspace
+read -p "Install userspace " -n 1 -r
+echo    # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    chmod +x install_userspace.sh
+    cp install_userspace.sh /mnt/home/jure
+    arch-chroot /mnt /bin/bash -c "/home/jure/install_userspace.sh $user"
+fi
+

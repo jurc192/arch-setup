@@ -92,7 +92,7 @@ arch-chroot /mnt /bin/bash -x <<- CHROOT
     ln -sf /usr/share/zoneinfo/Europe/Ljubljana /etc/localtime
 
     # Create user account
-    useradd -mU -G wheel,video,audio,storage,lp,optical "$user"
+    useradd -mU -G wheel,video,audio,storage,lp,optical,uucp "$user"
     printf "$user:$password\n" | chpasswd
     printf "%%wheel ALL=(ALL) ALL\n" > /etc/sudoers.d/99_wheel
     visudo -cf /etc/sudoers.d/99_wheel

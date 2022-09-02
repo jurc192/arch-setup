@@ -24,6 +24,19 @@ EOF
 # Install packages
 pacman -Syu jur-userspace || exit 1
 
+# Setup display manager's config (LightDM)
+cat << EOF > /etc/lightdm/lightdm.conf
+[LightDM]
+run-directory=/run/lightdm
+
+[Seat:*]
+greeter-session=lightdm-slick-greeter
+user-session=xfce
+session-wrapper=/etc/lightdm/Xsession
+
+[XDMCPServer]
+[VNCServer]
+EOF
 
 # Install dotfiles and themes
 runuser $1 <<- 'HEREDOC'
@@ -53,6 +66,7 @@ HEREDOC
 
 # Enable services
 systemctl enable NetworkManager
+systemctl enable lightdm
 
 
 printf "\nInstallation completed!\n"

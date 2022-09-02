@@ -25,6 +25,7 @@ EOF
 pacman -Syu jur-userspace || exit 1
 
 # Setup display manager's config (LightDM)
+cp /etc/lightdm/lightdm.conf /etc/lightdm/lightdm.conf.bckp
 cat << EOF > /etc/lightdm/lightdm.conf
 [LightDM]
 run-directory=/run/lightdm

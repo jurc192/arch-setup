@@ -15,13 +15,13 @@ exec 1> >(tee "install_userspace_stdout.log")
 exec 2> >(tee "install_userspace_stderr.log")
 
 # Add jurepo (custom package repository) to pacman.conf
-PACKAGE_DEST=/home/$1/Linux_stuff/
-mkdir -p $PACKAGE_DEST && cd $PACKAGE_TEST
+PACKAGE_DEST="/home/$1/Linux_stuff/"
+mkdir -p $PACKAGE_DEST && cd $PACKAGE_DEST
 git clone https://github.com/jurc192/jurepo
 cat << EOF >> /etc/pacman.conf
 [jurepo]
 SigLevel = Optional TrustAll
-Server = file://$PACKAGE_DEST/$arch
+Server = file://$PACKAGE_DEST/x86_64
 EOF
 
 # Install packages

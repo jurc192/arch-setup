@@ -116,12 +116,12 @@ printf "\n\nCore system installed successfully\n"
 
 
 # Install userspace
-read -p "Install userspace " -n 1 -r
+read -p "Install userspace [y/n]" -n 1 -r
 echo    # (optional) move to a new line
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
     chmod +x install_userspace.sh
-    cp install_userspace.sh /mnt/home/jure
-    arch-chroot /mnt /bin/bash -c "/home/jure/install_userspace.sh $user"
+    cp install_userspace.sh /mnt/home/$user
+    arch-chroot /mnt /bin/bash -c "/home/$user/install_userspace.sh $user"
 fi
 

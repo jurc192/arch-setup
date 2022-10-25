@@ -21,7 +21,7 @@ git clone https://github.com/jurc192/jurepo
 cat << EOF >> /etc/pacman.conf
 [jurepo]
 SigLevel = Optional TrustAll
-Server = file://$PACKAGE_DEST/x86_64
+Server = file://$PACKAGE_DEST/jurepo/x86_64
 EOF
 
 # Install packages

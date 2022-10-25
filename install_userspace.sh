@@ -15,17 +15,20 @@ exec 1> >(tee "install_userspace_stdout.log")
 exec 2> >(tee "install_userspace_stderr.log")
 
 # Add jurepo (custom package repository) to pacman.conf
+PACKAGE_DEST=/home/$1/Linux_stuff/
+mkdir -p $PACKAGE_DEST && cd $PACKAGE_TEST
+git clone https://github.com/jurc192/jurepo
 cat << EOF >> /etc/pacman.conf
 [jurepo]
 SigLevel = Optional TrustAll
-Server   = https://jursaws.s3.eu-west-3.amazonaws.com/jurepo
+Server = file://$PACKAGE_DEST/$arch
 EOF
 
 # Install packages
 pacman -Syu jur-userspace || exit 1
 
 # Setup display manager's config (LightDM)
-cp /etc/lightdm/lightdm.conf /etc/lightdm/lightdm.conf.bckp
+# cp /etc/lightdm/lightdm.conf /etc/lightdm/lightdm.conf.bckp
 cat << EOF > /etc/lightdm/lightdm.conf
 [LightDM]
 run-directory=/run/lightdm

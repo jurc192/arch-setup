@@ -71,7 +71,7 @@ mount "${part_boot}" /mnt/boot
 
 
 # Install base system
-pacstrap /mnt linux linux-firmware base base-devel sudo man-db man-pages nano openssh parted wpa_supplicant networkmanager
+pacstrap /mnt linux linux-firmware base base-devel sudo man-db man-pages nano openssh parted wpa_supplicant networkmanager git
 
 
 # Post-installation stuff

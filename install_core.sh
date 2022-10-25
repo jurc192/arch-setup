@@ -41,7 +41,7 @@ exec 2> >(tee "install_script_stderr.log")
 
 # Update pacman + choose fastest pacman mirrors
 echo "Updating pacman's mirror list"
-reflector --country Netherlands,Slovenia --score 5 --save /etc/pacman.d/mirrorlist
+reflector --country Slovenia, Netherlands --score 5 --save /etc/pacman.d/mirrorlist
 
 # Sync time
 timedatectl set-ntp true

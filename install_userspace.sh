@@ -68,6 +68,7 @@ HEREDOC
 # Enable services
 systemctl enable NetworkManager
 systemctl enable lightdm
+systemctl enable bluetooth
 
 
 printf "\nInstallation completed!\n"

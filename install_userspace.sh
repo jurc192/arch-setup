@@ -25,7 +25,7 @@ Server = file://$PACKAGE_DEST/jurepo/x86_64
 EOF
 
 # Install packages
-pacman -Syu jur-userspace || exit 1
+pacman -Syu --noconfirm --noprogressbar jur-userspace || exit 1
 
 # Setup display manager's config (LightDM)
 # cp /etc/lightdm/lightdm.conf /etc/lightdm/lightdm.conf.bckp
@@ -55,7 +55,7 @@ runuser $1 <<- 'HEREDOC'
         # if checkout fails, remove all files
         printf "Checkout failed: removing conflicting files\n"
         cd $HOME
-        dotfiles checkout 2>&1 | egrep "\s+\." | awk '{$1=$1;print}' | xargs -d '\n' rm -rf
+        dotfiles checkout 2>&1 | grep -E "\s+\." | awk '{$1=$1;print}' | xargs -d '\n' rm -rf
         dotfiles checkout || exit 1
     fi;
 

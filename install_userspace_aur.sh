@@ -11,12 +11,14 @@ packages=(
 
 
 
-mkdir -p "$build_dir"
+mkdir -p "$build_dir" || exit 1
+printf "AUR package installation script started\n\n"
+printf "Temporary build and log files in $build_dir\n\n"
 
 for package in "${packages[@]}"; do
     package_dir="$build_dir/$package"
 
-    printf "Installing $package .... "
+    printf "Installing $package\t\t"
 
     # All I/O for this group of commands will be redirected to a file
     {
@@ -39,4 +41,4 @@ for package in "${packages[@]}"; do
 
 done
 
-printf "\n\nAUR packages have been installed.\n\n"
+printf "\n\nAUR package installation script finished.\n\n"

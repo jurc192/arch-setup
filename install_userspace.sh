@@ -27,6 +27,7 @@ EOF
 # Install packages
 pacman -Syu --noconfirm --noprogressbar jur-userspace || exit 1
 
+
 # Setup display manager's config (LightDM)
 # cp /etc/lightdm/lightdm.conf /etc/lightdm/lightdm.conf.bckp
 cat << EOF > /etc/lightdm/lightdm.conf
@@ -43,6 +44,7 @@ session-wrapper=/etc/lightdm/Xsession
 EOF
 
 # Install dotfiles and themes
+# Using runuser + HEREDOC in order to perform the following operations as a regular user (not root)
 runuser $1 <<- 'HEREDOC'
     DIR_NAME=.dotfiles_git
     git clone --bare https://github.com/jurc192/dotfiles.git $HOME/$DIR_NAME || exit 1
@@ -53,10 +55,11 @@ runuser $1 <<- 'HEREDOC'
     dotfiles checkout
     if [ $? -ne 0 ]; then
         # if checkout fails, remove all files
-        printf "Checkout failed: removing conflicting files\n"
+        printf "Removing conflicting files due to failed checkout\n"
         cd $HOME
         dotfiles checkout 2>&1 | grep -E "\s+\." | awk '{$1=$1;print}' | xargs -d '\n' rm -rf
         dotfiles checkout || exit 1
+        printf "Dotfiles checkout succeeded\n"
     fi;
 
     dotfiles config status.showUntrackedFiles no
@@ -74,4 +77,14 @@ systemctl enable lightdm
 systemctl enable bluetooth
 
 
-printf "\nInstallation completed!\n"
+printf "\n\nInstallation completed!\n\n"
+
+# Install aur packages prompt?
+read -p "Install AUR packages [y/n]" -n 1 -r
+echo    # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    chmod +x install_userspace_aur.sh
+    cp install_userspace_aur.sh /mnt/home/$user
+    arch-chroot /mnt /bin/bash -c "/home/$user/install_userspace_aur.sh
+fi

@@ -112,7 +112,7 @@ arch-chroot /mnt /bin/bash -x <<- CHROOT
 INNER
 CHROOT
 
-printf "\n\nCore system installed successfully\n"
+printf "\n\nCore system installed successfully\n\n"
 
 
 # Install userspace

@@ -16,6 +16,8 @@ mkdir -p "$build_dir"
 for package in "${packages[@]}"; do
     package_dir="$build_dir/$package"
 
+    printf "Installing $package .... "
+
     # All I/O for this group of commands will be redirected to a file
     {
         # Clone the AUR package repository
@@ -23,19 +25,18 @@ for package in "${packages[@]}"; do
         cd "$package_dir"
 
         # Build and install the package
-        makepkg -si --noconfirm
+        makepkg -si --noconfirm &&
+        cd -
 
     } > $build_dir/$package.output 2>&1
 
     # Check if the package was installed successfully
     if [ $? -eq 0 ]; then
-        echo "$package successfully installed."
+        printf "OK\n"
     else
-        echo "Failed to install $package."
+        printf "FAILED\n"
     fi
 
-    # Return to the original directory
-    cd -
 done
 
 printf "\n\nAUR packages have been installed.\n\n"

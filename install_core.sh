@@ -46,7 +46,6 @@ reflector --country Slovenia,Netherlands --score 5 --save /etc/pacman.d/mirrorli
 # Sync time
 timedatectl set-ntp true
 
-
 # Disk partitioning and filesystems
 devicelist=$(lsblk -dplnx size -o name,size | grep -Ev "boot|rpmb|loop" | tac)
 device=$(dialog --stdout --menu "Select installtion disk" 0 0 0 ${devicelist}) || exit 1
@@ -115,13 +114,13 @@ CHROOT
 printf "\n\nCore system installed successfully\n\n"
 
 
-# Install userspace
-read -p "Install userspace [y/n]" -n 1 -r
-echo    # (optional) move to a new line
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-    chmod +x install_userspace.sh
-    cp install_userspace.sh /mnt/home/$user
-    arch-chroot /mnt /bin/bash -c "/home/$user/install_userspace.sh $user"
-fi
+# # Install userspace
+# read -p "Install userspace [y/n]" -n 1 -r
+# echo    # (optional) move to a new line
+# if [[ $REPLY =~ ^[Yy]$ ]]
+# then
+#     chmod +x install_userspace.sh
+#     cp install_userspace.sh /mnt/home/$user
+#     arch-chroot /mnt /bin/bash -c "/home/$user/install_userspace.sh $user"
+# fi
 

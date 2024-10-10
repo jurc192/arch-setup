@@ -27,6 +27,10 @@ EOF
 # Install packages
 pacman -Syu --noconfirm --noprogressbar jur-userspace || exit 1
 
+# Enable services
+# systemctl enable NetworkManager
+# systemctl enable lightdm
+# systemctl enable bluetooth
 
 # Setup display manager's config (LightDM)
 # cp /etc/lightdm/lightdm.conf /etc/lightdm/lightdm.conf.bckp
@@ -69,12 +73,6 @@ runuser $1 <<- 'HEREDOC'
     # Install themes
     git clone https://github.com/jurc192/themes.git $HOME/.themes || exit 1
 HEREDOC
-
-
-# Enable services
-systemctl enable NetworkManager
-systemctl enable lightdm
-systemctl enable bluetooth
 
 
 printf "\n\nInstallation completed!\n\n"

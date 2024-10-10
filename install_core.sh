@@ -20,10 +20,8 @@ set -xeuo pipefail
 echo "Updating pacman's mirror list"
 reflector --country Slovenia,Netherlands --score 5 --save /etc/pacman.d/mirrorlist
 
-# Sync time
-timedatectl set-ntp true
-
-pacman -Syu --needed --noconfirm pacman-contrib dialog
+# Install utils needed for running this script
+pacman -S --needed --noconfirm pacman-contrib dialog
 
 # Get user input: hostname, username, password
 hostname=$(dialog --stdout --inputbox "Enter hostname" 0 0) || exit 1

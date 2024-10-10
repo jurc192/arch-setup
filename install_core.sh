@@ -15,7 +15,15 @@
 # Bash flags (https://bash-prompt.net/guides/bash-set-options/)
 set -xeuo pipefail
 
-pacman -S --needed --noconfirm pacman-contrib dialog
+
+# Update pacman + choose fastest pacman mirrors
+echo "Updating pacman's mirror list"
+reflector --country Slovenia,Netherlands --score 5 --save /etc/pacman.d/mirrorlist
+
+# Sync time
+timedatectl set-ntp true
+
+pacman -Syu --needed --noconfirm pacman-contrib dialog
 
 # Get user input: hostname, username, password
 hostname=$(dialog --stdout --inputbox "Enter hostname" 0 0) || exit 1
@@ -37,14 +45,6 @@ clear
 # setup logging
 exec 1> >(tee "install_script_stdout.log")
 exec 2> >(tee "install_script_stderr.log")
-
-
-# Update pacman + choose fastest pacman mirrors
-echo "Updating pacman's mirror list"
-reflector --country Slovenia,Netherlands --score 5 --save /etc/pacman.d/mirrorlist
-
-# Sync time
-timedatectl set-ntp true
 
 # Disk partitioning and filesystems
 devicelist=$(lsblk -dplnx size -o name,size | grep -Ev "boot|rpmb|loop" | tac)

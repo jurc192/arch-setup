@@ -8,7 +8,7 @@
 #
 #   OR
 #
-#   pacman -Sy && pacman -S git && git clone https://github.com/jurc192/arch_setup
+#   pacman -Sy git && git clone https://github.com/jurc192/arch_setup
 #   
 # by Jure Vidmar
 

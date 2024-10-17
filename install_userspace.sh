@@ -1,6 +1,11 @@
 #!/bin/bash
 set -xeuo pipefail
 
+if [ $? -ne 1 ]; then
+    printf "Run script with: ./install_userspace.sh <username>\n\tusername - username of the chroot's systems user"
+fi;
+user=$1
+
 # Install userspace
 arch-chroot /mnt /bin/bash <<EOF
 

@@ -114,18 +114,18 @@ arch-chroot /mnt /bin/bash <<EOF
     runuser $user <<- 'HEREDOC2'
         cd /home/$user/
 
-        DIR_NAME=.dotfiles_git
-        git clone --bare https://github.com/jurc192/dotfiles.git $HOME/$DIR_NAME || exit 1
+        DIR_NAME=".dotfiles_git"
+        git clone --bare https://github.com/jurc192/dotfiles.git \$HOME/\$DIR_NAME || exit 1
 
         function dotfiles {
-        /usr/bin/git --git-dir=$HOME/$DIR_NAME --work-tree=$HOME $@
+        /usr/bin/git --git-dir=\$HOME/\$DIR_NAME --work-tree=\$HOME \$@
         }
         dotfiles checkout
         if [ $? -ne 0 ]; then
             # if checkout fails, remove all files
             printf "Removing conflicting files due to failed checkout\n"
-            cd $HOME
-            dotfiles checkout 2>&1 | grep -E "\s+\." | awk '{$1=$1;print}' | xargs -d '\n' rm -rf
+            cd \$HOME
+            dotfiles checkout 2>&1 | grep -E "\s+\." | awk '{\$1=\$1;print}' | xargs -d '\n' rm -rf
             dotfiles checkout || exit 1
             printf "Dotfiles checkout succeeded\n"
         fi;
@@ -135,7 +135,7 @@ arch-chroot /mnt /bin/bash <<EOF
         printf "\nConfiguration files applied successfully\n"
 
         # Install themes
-        git clone https://github.com/jurc192/themes.git $HOME/.themes || exit 1
+        git clone https://github.com/jurc192/themes.git \$HOME/.themes || exit 1
     HEREDOC2
 
 EOF

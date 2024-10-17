@@ -13,14 +13,15 @@ printf "\n\nCore system installed successfully\n\n"
 # Install userspace
 arch-chroot /mnt /bin/bash <<EOF
 
-    echo "Building and installing jur-userspace"
-    git clone https://github.com/jurc192/arch-packages /home/$user/arch-packages
-    cd /home/$user/arch-packages/jur-userspace
-    makepkg -si
-
     # Run all user-specific commands using runuser -c ""
     runuser "$user" -c "
+        
         cd /home/$user/
+
+        echo "Building and installing jur-userspace"
+        git clone https://github.com/jurc192/arch-packages /home/$user/arch-packages
+        cd /home/$user/arch-packages/jur-userspace
+        makepkg -si
 
         DIR_NAME='.dotfiles_git'
         git clone --bare https://github.com/jurc192/dotfiles.git \$HOME/\$DIR_NAME || exit 1

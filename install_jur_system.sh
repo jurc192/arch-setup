@@ -111,24 +111,27 @@ printf "\n\nCore system installed successfully\n\n"
 # Install userspace
 arch-chroot /mnt /bin/bash <<EOF
 
-    # Run all user-specific commands using runuser -c ""
     runuser "$user" -c "
         
         cd /home/$user/
 
-        echo "Building and installing jur-userspace"
+        echo 'Building and installing jur-userspace'
         git clone https://github.com/jurc192/arch-packages /home/$user/arch-packages
         cd /home/$user/arch-packages/jur-userspace
         makepkg -si
+        if [ \$? -ne 0 ]; then
+            echo 'Failed to install jur-userspace.'
+            exit 1
+        fi
 
         DIR_NAME='.dotfiles_git'
         git clone --bare https://github.com/jurc192/dotfiles.git \$HOME/\$DIR_NAME || exit 1
 
         function dotfiles {
-            /usr/bin/git --git-dir=\$HOME/\$DIR_NAME --work-tree=\$HOME \"\$@\"
+            /usr/bin/git --git-dir=\$HOME/\$DIR_NAME --work-tree=\$HOME \'\$@\'
         }
 
-        dotfiles checkout
+        /usr/bin/git --git-dir=\$HOME/\$DIR_NAME --work-tree=\$HOME \'\$@\' checkout
         if [ \$? -ne 0 ]; then
             # If checkout fails, remove all conflicting files
             printf 'Removing conflicting files due to failed checkout\n'
